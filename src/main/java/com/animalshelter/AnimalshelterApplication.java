@@ -1,4 +1,4 @@
-package com.example.animalshelter;
+package com.animalshelter;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
