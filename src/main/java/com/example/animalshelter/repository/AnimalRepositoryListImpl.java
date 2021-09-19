@@ -15,7 +15,7 @@ public class AnimalRepositoryListImpl implements AnimalRepository {
     }
 
     @Override
-    public boolean save(Animal animal) {
+    public boolean add(Animal animal) {
         return animals.add(animal);
     }
 }

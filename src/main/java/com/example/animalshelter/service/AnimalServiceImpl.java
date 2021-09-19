@@ -16,10 +16,10 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
-    public boolean save(Animal animal) {
-        if (animal == null || animal.getId() <= 0) {
-            return false;
+    public boolean add(Animal animal) {
+        if (!animalRepository.add(animal)) {
+            throw new AddAnimalException("Error during saving an animal in database.");
         }
-        return animalRepository.save(animal);
+        return true;
     }
 }

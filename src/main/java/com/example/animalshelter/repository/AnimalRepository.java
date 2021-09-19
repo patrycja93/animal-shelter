@@ -7,5 +7,5 @@ import com.example.animalshelter.model.Animal;
  */
 public interface AnimalRepository {
 
-    boolean save(Animal animal);
+    boolean add(Animal animal);
 }

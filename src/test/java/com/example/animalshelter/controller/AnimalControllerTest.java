@@ -1,6 +1,9 @@
 package com.example.animalshelter.controller;
 
 import com.example.animalshelter.model.Animal;
+import com.example.animalshelter.model.AnimalGender;
+import com.example.animalshelter.model.AnimalHealthStatus;
+import com.example.animalshelter.model.AnimalType;
 import com.example.animalshelter.service.AnimalService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -19,35 +22,29 @@ class AnimalControllerTest {
         dummyAnimal = new Animal();
         dummyAnimal.setId(4321);
         dummyAnimal.setAge(3);
-        dummyAnimal.setGender("male");
-        dummyAnimal.setStatus("healthy");
+        dummyAnimal.setGender(AnimalGender.MALE);
+        dummyAnimal.setHealthStatus(AnimalHealthStatus.HEALTHY);
         dummyAnimal.setName("Alex");
-        dummyAnimal.setType("dog");
+        dummyAnimal.setType(AnimalType.DOG);
     }
 
     @Test
-    public void shouldSaveAnAnimal() {
+    public void shouldAddAnAnimal() {
         AnimalController animalController = new AnimalController(animalService);
-        Mockito.when(animalService.save(dummyAnimal)).thenReturn(true);
+        Mockito.when(animalService.add(dummyAnimal)).thenReturn(true);
 
-        Animal result = animalController.saveAnimal(dummyAnimal);
+        String result = animalController.addAnimal(dummyAnimal);
 
-        assertThat(result).isEqualTo(dummyAnimal);
+        assertThat(result).isEqualTo("Animal added successfully.");
     }
 
     @Test
-    public void shouldNotSaveAnAnimal() {
+    public void shouldNotAddAnAnimal() {
         AnimalController animalController = new AnimalController(animalService);
-        Mockito.when(animalService.save(dummyAnimal)).thenReturn(false);
+        Mockito.when(animalService.add(dummyAnimal)).thenReturn(false);
 
-        Animal result = animalController.saveAnimal(dummyAnimal);
+        String result = animalController.addAnimal(dummyAnimal);
 
-        assertThat(result).isInstanceOf(Animal.class);
-        assertThat(result.getId()).isEqualTo(0);
-        assertThat(result.getAge()).isEqualTo(0);
-        assertThat(result.getGender()).isNull();
-        assertThat(result.getName()).isNull();
-        assertThat(result.getStatus()).isNull();
-        assertThat(result.getType()).isNull();
+        assertThat(result).isEqualTo("An Error occurred during adding animal.");
     }
 }

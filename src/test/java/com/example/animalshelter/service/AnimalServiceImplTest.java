@@ -2,9 +2,10 @@ package com.example.animalshelter.service;
 
 import com.example.animalshelter.model.Animal;
 import com.example.animalshelter.repository.AnimalRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
+import static org.assertj.core.api.Assertions.*;
 
 class AnimalServiceImplTest {
 
@@ -12,33 +13,27 @@ class AnimalServiceImplTest {
     private Animal dummyAnimal;
 
     @Test
-    public void shouldSaveAnimal() {
+    public void shouldAddAnimal() {
         dummyAnimal = new Animal();
         dummyAnimal.setId(123456);
         AnimalService animalService = new AnimalServiceImpl(animalRepository);
-        Mockito.when(animalRepository.save(dummyAnimal)).thenReturn(true);
+        Mockito.when(animalRepository.add(dummyAnimal)).thenReturn(true);
 
-        boolean result = animalService.save(dummyAnimal);
+        boolean result = animalService.add(dummyAnimal);
 
-        Assertions.assertThat(result).isTrue();
+        assertThat(result).isTrue();
     }
 
     @Test
-    public void shouldNotSaveAnimalWhenIdIsEmpty() {
+    public void shouldThrowExceptionWhenDatabaseError() {
         dummyAnimal = new Animal();
+        dummyAnimal.setId(123456);
+
         AnimalService animalService = new AnimalServiceImpl(animalRepository);
+        Mockito.when(animalRepository.add(dummyAnimal)).thenReturn(false);
 
-        boolean result = animalService.save(dummyAnimal);
-
-        Assertions.assertThat(result).isFalse();
-    }
-
-    @Test
-    public void shouldNotSaveAnimalWhenAnimalIsNull() {
-        AnimalService animalService = new AnimalServiceImpl(animalRepository);
-
-        boolean result = animalService.save(dummyAnimal);
-
-        Assertions.assertThat(result).isFalse();
+        assertThatExceptionOfType(AddAnimalException.class).isThrownBy(
+                () -> animalService.add(dummyAnimal)
+        ).withMessage("Could not create an animal. Error during saving an animal in database.");
     }
 }
