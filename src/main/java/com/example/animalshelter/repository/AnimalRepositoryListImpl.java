@@ -8,7 +8,7 @@ import java.util.List;
 @Repository
 public class AnimalRepositoryListImpl implements AnimalRepository {
 
-    private List<Animal> animals;
+    private final List<Animal> animals;
 
     public AnimalRepositoryListImpl(List<Animal> animals) {
         this.animals = animals;

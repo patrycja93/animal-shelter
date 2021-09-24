@@ -2,7 +2,7 @@ package com.example.animalshelter.model;
 
 public enum AnimalHealthStatus {
 
-    UNKNOWN,
+    NOT_EXAMINED,
     HEALTHY,
     SICK,
     UNDER_OBSERVATION,

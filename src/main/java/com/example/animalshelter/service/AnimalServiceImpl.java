@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AnimalServiceImpl implements AnimalService {
 
+    private final static String REPOSITORY_EXCEPTION_MSG = "Error during saving an animal in database";
     private final AnimalRepository animalRepository;
 
     @Autowired
@@ -18,7 +19,7 @@ public class AnimalServiceImpl implements AnimalService {
     @Override
     public boolean add(Animal animal) {
         if (!animalRepository.add(animal)) {
-            throw new AddAnimalException("Error during saving an animal in database.");
+            throw new AddAnimalException(REPOSITORY_EXCEPTION_MSG);
         }
         return true;
     }

@@ -35,7 +35,7 @@ class AnimalControllerTest {
 
         String result = animalController.addAnimal(dummyAnimal);
 
-        assertThat(result).isEqualTo("Animal added successfully.");
+        assertThat(result).isEqualTo("The animal has been added successfully.");
     }
 
     @Test
@@ -45,6 +45,6 @@ class AnimalControllerTest {
 
         String result = animalController.addAnimal(dummyAnimal);
 
-        assertThat(result).isEqualTo("An Error occurred during adding animal.");
+        assertThat(result).isEqualTo("An error occurred during adding animal.");
     }
 }

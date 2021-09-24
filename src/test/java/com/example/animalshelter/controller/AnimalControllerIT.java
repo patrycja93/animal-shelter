@@ -54,7 +54,7 @@ public class AnimalControllerIT {
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string("Animal added successfully."));
+                .andExpect(content().string("The animal has been added successfully."));
     }
 
     @Test

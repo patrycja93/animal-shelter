@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/animals")
 public class AnimalController {
 
-    private static final String SUCCESSFUL_RESPONSE = "Animal added successfully.";
-    private static final String FAILED_RESPONSE = "An Error occurred during adding animal.";
+    private static final String SUCCESSFUL_RESPONSE = "The animal has been added successfully.";
+    private static final String FAILED_RESPONSE = "An error occurred during adding animal.";
 
     private final AnimalService animalService;
 

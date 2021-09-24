@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.*;
 
 class AnimalServiceImplTest {
 
-    private AnimalRepository animalRepository = Mockito.mock(AnimalRepository.class);
+    private final AnimalRepository animalRepository = Mockito.mock(AnimalRepository.class);
     private Animal dummyAnimal;
 
     @Test
@@ -34,6 +34,6 @@ class AnimalServiceImplTest {
 
         assertThatExceptionOfType(AddAnimalException.class).isThrownBy(
                 () -> animalService.add(dummyAnimal)
-        ).withMessage("Could not create an animal. Error during saving an animal in database.");
+        ).withMessage("Could not create the animal Error during saving an animal in database.");
     }
 }
