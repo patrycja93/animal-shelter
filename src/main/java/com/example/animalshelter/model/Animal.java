@@ -1,8 +1,6 @@
 package com.example.animalshelter.model;
 
-import com.example.animalshelter.service.AnimalService;
 import lombok.Data;
-import org.hibernate.annotations.Table;
 
 import javax.persistence.*;
 
