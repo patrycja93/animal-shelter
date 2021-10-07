@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 public class AnimalServiceImpl implements AnimalService {
 
     private final static String REPOSITORY_EXCEPTION_MSG = "Error during saving an animal in database";
+    private final static String INVALID_ID_MSG = "Invalid animal id number";
     private final AnimalRepository animalRepository;
 
     @Autowired
@@ -22,5 +23,13 @@ public class AnimalServiceImpl implements AnimalService {
             throw new AddAnimalException(REPOSITORY_EXCEPTION_MSG);
         }
         return true;
+    }
+
+    @Override
+    public boolean delete(int id) throws DeleteAnimalException {
+        if (id <= 0) {
+            throw new DeleteAnimalException(INVALID_ID_MSG);
+        }
+        return animalRepository.delete(id);
     }
 }
