@@ -19,12 +19,12 @@ public class AnimalRepositoryListImpl implements AnimalRepository {
     }
 
     @Override
-    public boolean delete(int id) throws DeleteAnimalException {
+    public boolean delete(Integer id) throws DeleteAnimalException {
         return animals.remove(getAnimalWithId(id));
     }
 
     // This method won't be needed when we move to Spring Data
-    private Animal getAnimalWithId(int id) throws DeleteAnimalException {
+    private Animal getAnimalWithId(Integer id) throws DeleteAnimalException {
         return animals.stream()
                 .filter(animal -> animal.getId() == id)
                 .findAny()

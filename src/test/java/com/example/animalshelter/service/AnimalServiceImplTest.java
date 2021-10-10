@@ -14,6 +14,7 @@ import static org.mockito.Mockito.*;
 
 class AnimalServiceImplTest {
 
+    public static final String INVALID_ANIMAL_ID_NUMBER = "Invalid animal id number.";
     private final AnimalRepository animalRepository = mock(AnimalRepository.class);
     private final AnimalService animalService = new AnimalServiceImpl(animalRepository);
 
@@ -57,13 +58,13 @@ class AnimalServiceImplTest {
     public void shouldThrowExceptionWhenIdIsZero() {
         assertThatExceptionOfType(DeleteAnimalException.class).isThrownBy(
                 () -> animalService.delete(0)
-        ).withMessage("Invalid animal id number");
+        ).withMessage(INVALID_ANIMAL_ID_NUMBER);
     }
 
     @Test
     public void shouldThrowExceptionWhenIdIsBelowZero() {
         assertThatExceptionOfType(DeleteAnimalException.class).isThrownBy(
                 () -> animalService.delete(-1)
-        ).withMessage("Invalid animal id number");
+        ).withMessage(INVALID_ANIMAL_ID_NUMBER);
     }
 }

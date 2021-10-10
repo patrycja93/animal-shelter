@@ -24,7 +24,7 @@ public class AnimalController {
     }
 
     @DeleteMapping("/{id}")
-    public String deleteAnimal(@PathVariable int id) throws DeleteAnimalException {
+    public String deleteAnimal(@PathVariable Integer id) throws DeleteAnimalException {
         return animalService.delete(id) ? SUCCESSFUL_RESPONSE : FAILED_RESPONSE;
     }
 }

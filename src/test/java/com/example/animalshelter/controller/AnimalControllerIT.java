@@ -33,6 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class AnimalControllerIT {
 
+    public static final String INVALID_ANIMAL_ID_NUMBER = "Invalid animal id number.";
     public static final Animal DUMMY_ANIMAL = Animal.builder()
             .id(4321)
             .name("Axel")
@@ -111,7 +112,7 @@ public class AnimalControllerIT {
                 .andExpect(result -> assertTrue(
                         result.getResolvedException() instanceof DeleteAnimalException))
                 .andExpect(result -> assertEquals(
-                        "Invalid animal id number",
+                        INVALID_ANIMAL_ID_NUMBER,
                         Objects.requireNonNull(result.getResolvedException()).getMessage()));
     }
 

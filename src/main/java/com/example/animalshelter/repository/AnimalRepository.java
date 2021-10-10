@@ -10,5 +10,5 @@ public interface AnimalRepository {
 
     boolean add(Animal animal);
 
-    boolean delete(int id) throws DeleteAnimalException;
+    boolean delete(Integer id) throws DeleteAnimalException;
 }
