@@ -8,13 +8,24 @@ import com.example.animalshelter.service.AnimalService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.*;
 
+@ExtendWith(MockitoExtension.class)
 class AnimalControllerTest {
 
-    private final AnimalService animalService = Mockito.mock(AnimalService.class);
+    @Mock
+    private AnimalService animalService;
+
+    @InjectMocks
+    private AnimalController animalController;
+
+
     private static Animal dummyAnimal;
 
     @BeforeAll
@@ -30,7 +41,6 @@ class AnimalControllerTest {
 
     @Test
     public void shouldAddAnAnimal() {
-        AnimalController animalController = new AnimalController(animalService);
         Mockito.when(animalService.add(dummyAnimal)).thenReturn(true);
 
         String result = animalController.addAnimal(dummyAnimal);
@@ -40,7 +50,6 @@ class AnimalControllerTest {
 
     @Test
     public void shouldNotAddAnAnimal() {
-        AnimalController animalController = new AnimalController(animalService);
         Mockito.when(animalService.add(dummyAnimal)).thenReturn(false);
 
         String result = animalController.addAnimal(dummyAnimal);

@@ -2,10 +2,9 @@ package com.example.animalshelter.controller;
 
 import com.example.animalshelter.model.Animal;
 import com.example.animalshelter.service.AnimalService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/animals")
@@ -23,5 +22,11 @@ public class AnimalController {
     @PostMapping(consumes = "application/json", produces = "application/json")
     public String addAnimal(@RequestBody Animal animal) {
         return animalService.add(animal) ? SUCCESSFUL_RESPONSE : FAILED_RESPONSE;
+    }
+
+    @GetMapping
+    public List<Animal> all(){
+        return animalService.findAll();
+
     }
 }

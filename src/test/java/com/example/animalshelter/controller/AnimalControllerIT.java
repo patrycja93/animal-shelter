@@ -4,18 +4,25 @@ import com.example.animalshelter.model.Animal;
 import com.example.animalshelter.model.AnimalGender;
 import com.example.animalshelter.model.AnimalHealthStatus;
 import com.example.animalshelter.model.AnimalType;
+import com.example.animalshelter.service.AnimalService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultMatcher;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -31,13 +38,9 @@ public class AnimalControllerIT {
     @Autowired
     private MockMvc mockMvc;
 
-    @Test
-    public void contextLoad() {
-        assertThat(animalController).isNotNull();
-    }
+    private final Animal dummyAnimal = createAnimal();
 
-    @Test
-    public void shouldReturnPositiveHttpResponseWithContent() throws Exception {
+    private Animal createAnimal() {
         Animal dummyAnimal = new Animal();
         dummyAnimal.setId(4321);
         dummyAnimal.setAge(3);
@@ -45,13 +48,22 @@ public class AnimalControllerIT {
         dummyAnimal.setHealthStatus(AnimalHealthStatus.HEALTHY);
         dummyAnimal.setName("Alex");
         dummyAnimal.setType(AnimalType.DOG);
+        return dummyAnimal;
+    }
 
+    @Test
+    public void contextLoad() {
+        assertThat(animalController).isNotNull();
+    }
+
+    @Test
+    public void shouldReturnPositiveHttpResponseWithContent() throws Exception {
         String asJson = new ObjectMapper().writeValueAsString(dummyAnimal);
 
         this.mockMvc.perform(
-                        post("/animals")
-                                .content(asJson)
-                                .contentType(MediaType.APPLICATION_JSON))
+                post("/animals")
+                        .content(asJson)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string("The animal has been added successfully."));
@@ -62,10 +74,23 @@ public class AnimalControllerIT {
         String asJson = new ObjectMapper().writeValueAsString(null);
 
         this.mockMvc.perform(
-                        post("/animals")
-                                .content(asJson)
-                                .contentType(MediaType.APPLICATION_JSON))
+                post("/animals")
+                        .content(asJson)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void shouldReturnStatusIsOkAndAnimalObjectList() throws Exception {
+        List<Animal> animals = Collections.singletonList(dummyAnimal);
+        animalController.addAnimal(dummyAnimal);
+        String animal = new ObjectMapper().writeValueAsString(animals);
+
+        this.mockMvc.perform(
+                get("/animals")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(content().string(animal));
     }
 }

@@ -18,4 +18,9 @@ public class AnimalRepositoryListImpl implements AnimalRepository {
     public boolean add(Animal animal) {
         return animals.add(animal);
     }
+
+    @Override
+    public List<Animal> findAll() {
+        return animals;
+    }
 }
