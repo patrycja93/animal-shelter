@@ -14,6 +14,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Collections;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -55,5 +58,14 @@ class AnimalControllerTest {
         String result = animalController.addAnimal(dummyAnimal);
 
         assertThat(result).isEqualTo("An error occurred during adding animal.");
+    }
+
+    @Test
+    public void shouldGetAllAnimals() {
+        Mockito.when(animalService.findAll()).thenReturn(Collections.singletonList(dummyAnimal));
+
+        List<Animal> animals = animalController.all();
+
+        assertThat(animals).isEqualTo(Collections.singletonList(dummyAnimal));
     }
 }
