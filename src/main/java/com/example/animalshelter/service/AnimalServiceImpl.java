@@ -30,4 +30,10 @@ public class AnimalServiceImpl implements AnimalService {
     public List<Animal> findAll() {
         return animalRepository.findAll();
     }
+
+    @Override
+    public Animal findOne(Long id) {
+        return animalRepository.findOne(id)
+                .orElseThrow(() -> new AnimalNotFoundException(id));
+    }
 }

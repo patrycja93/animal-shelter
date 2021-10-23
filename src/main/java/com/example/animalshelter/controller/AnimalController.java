@@ -25,8 +25,12 @@ public class AnimalController {
     }
 
     @GetMapping
-    public List<Animal> all(){
+    public List<Animal> all() {
         return animalService.findAll();
+    }
 
+    @GetMapping("/{id}")
+    public Animal one(@PathVariable Long id) {
+        return animalService.findOne(id);
     }
 }

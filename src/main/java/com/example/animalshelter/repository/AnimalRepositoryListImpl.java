@@ -4,6 +4,7 @@ import com.example.animalshelter.model.Animal;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class AnimalRepositoryListImpl implements AnimalRepository {
@@ -22,5 +23,11 @@ public class AnimalRepositoryListImpl implements AnimalRepository {
     @Override
     public List<Animal> findAll() {
         return animals;
+    }
+
+    @Override
+    public Optional<Animal> findOne(Long id) {
+        return animals.stream().filter(animal -> animal.getId() == id)
+                .findFirst();
     }
 }

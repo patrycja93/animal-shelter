@@ -9,4 +9,6 @@ public interface AnimalService {
     boolean add(Animal animal);
 
     List<Animal> findAll();
+
+    Animal findOne(Long id);
 }
