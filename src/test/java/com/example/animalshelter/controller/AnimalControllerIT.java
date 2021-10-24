@@ -13,6 +13,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
@@ -92,5 +93,28 @@ public class AnimalControllerIT {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(content().string(animal));
+    }
+
+    @Test
+    public void shouldReturnStatusIsOkAndAnimal() throws Exception {
+        animalController.addAnimal(dummyAnimal);
+        String animal = new ObjectMapper().writeValueAsString(dummyAnimal);
+
+        this.mockMvc.perform(
+                get("/animals/4321")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(content().string(animal));
+    }
+
+    @Test
+    public void shouldReturnStatusNotFoundWhenAnimalIsNotFound() throws Exception {
+        animalController.addAnimal(dummyAnimal);
+
+        this.mockMvc.perform(
+                get("/animals/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isNotFound());
     }
 }
