@@ -18,17 +18,17 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
-    public boolean add(Animal animal) {
+    public Animal add(Animal animal) {
         if (!animalRepository.add(animal)) {
             throw new AddAnimalException(REPOSITORY_EXCEPTION_MSG);
         }
-        return true;
+        return animal;
     }
 
     @Override
-    public boolean delete(Integer id) throws DeleteAnimalException {
+    public Animal delete(Integer id) throws AnimalNotFoundException {
         if (id == null || id <= 0) {
-            throw new DeleteAnimalException(INVALID_ID_MSG);
+            throw new AnimalNotFoundException(INVALID_ID_MSG);
         }
         return animalRepository.delete(id);
     }

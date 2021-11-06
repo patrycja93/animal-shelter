@@ -1,7 +1,7 @@
 package com.example.animalshelter.repository;
 
 import com.example.animalshelter.model.Animal;
-import com.example.animalshelter.service.DeleteAnimalException;
+import com.example.animalshelter.service.AnimalNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -19,15 +19,19 @@ public class AnimalRepositoryListImpl implements AnimalRepository {
     }
 
     @Override
-    public boolean delete(Integer id) throws DeleteAnimalException {
-        return animals.remove(getAnimalWithId(id));
+    public Animal delete(Integer id) throws AnimalNotFoundException {
+         Animal animalToBeDeleted = getAnimalWithId(id);
+         if(animals.remove(animalToBeDeleted)) {
+             return animalToBeDeleted;
+         }
+         throw new AnimalNotFoundException(ANIMAL_NOT_FOUND_MSG);
     }
 
     // This method won't be needed when we move to Spring Data
-    private Animal getAnimalWithId(Integer id) throws DeleteAnimalException {
+    private Animal getAnimalWithId(Integer id) throws AnimalNotFoundException {
         return animals.stream()
                 .filter(animal -> animal.getId() == id)
                 .findAny()
-                .orElseThrow(() -> new DeleteAnimalException(ANIMAL_NOT_FOUND_MSG));
+                .orElseThrow(() -> new AnimalNotFoundException(ANIMAL_NOT_FOUND_MSG));
     }
 }

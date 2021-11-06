@@ -5,9 +5,7 @@ import com.example.animalshelter.model.AnimalGender;
 import com.example.animalshelter.model.AnimalHealthStatus;
 import com.example.animalshelter.model.AnimalType;
 import com.example.animalshelter.repository.AnimalRepository;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -17,9 +15,10 @@ class AnimalServiceImplTest {
     public static final String INVALID_ANIMAL_ID_NUMBER = "Invalid animal id number.";
     private final AnimalRepository animalRepository = mock(AnimalRepository.class);
     private final AnimalService animalService = new AnimalServiceImpl(animalRepository);
+    private static final int ID = 4321;
 
     public static final Animal DUMMY_ANIMAL = Animal.builder()
-            .id(4321)
+            .id(ID)
             .name("Axel")
             .age(3)
             .type(AnimalType.DOG)
@@ -31,9 +30,9 @@ class AnimalServiceImplTest {
     public void shouldAddAnimal() {
         when(animalRepository.add(DUMMY_ANIMAL)).thenReturn(true);
 
-        boolean result = animalService.add(DUMMY_ANIMAL);
+        Animal result = animalService.add(DUMMY_ANIMAL);
 
-        assertThat(result).isTrue();
+        assertThat(result).isEqualTo(DUMMY_ANIMAL);
     }
 
     @Test
@@ -46,24 +45,25 @@ class AnimalServiceImplTest {
     }
 
     @Test
-    public void shouldDeleteAnimal() throws DeleteAnimalException {
-        when(animalRepository.delete(DUMMY_ANIMAL.getId())).thenReturn(true);
+    public void shouldDeleteAnimal() throws AnimalNotFoundException {
+        when(animalRepository.delete(ID)).thenReturn(DUMMY_ANIMAL);
 
-        boolean result = animalService.delete(DUMMY_ANIMAL.getId());
+        Animal result = animalService.delete(ID);
 
-        assertThat(result).isTrue();
+        assertThat(result).isEqualTo(DUMMY_ANIMAL);
+        assertThat(result.getId()).isEqualTo(ID);
     }
 
     @Test
     public void shouldThrowExceptionWhenIdIsZero() {
-        assertThatExceptionOfType(DeleteAnimalException.class).isThrownBy(
+        assertThatExceptionOfType(AnimalNotFoundException.class).isThrownBy(
                 () -> animalService.delete(0)
         ).withMessage(INVALID_ANIMAL_ID_NUMBER);
     }
 
     @Test
     public void shouldThrowExceptionWhenIdIsBelowZero() {
-        assertThatExceptionOfType(DeleteAnimalException.class).isThrownBy(
+        assertThatExceptionOfType(AnimalNotFoundException.class).isThrownBy(
                 () -> animalService.delete(-1)
         ).withMessage(INVALID_ANIMAL_ID_NUMBER);
     }
