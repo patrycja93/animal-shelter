@@ -20,11 +20,20 @@ public class AnimalRepositoryListImpl implements AnimalRepository {
 
     @Override
     public Animal delete(Integer id) throws AnimalNotFoundException {
-         Animal animalToBeDeleted = getAnimalWithId(id);
-         if(animals.remove(animalToBeDeleted)) {
-             return animalToBeDeleted;
-         }
-         throw new AnimalNotFoundException(ANIMAL_NOT_FOUND_MSG);
+        Animal animalToBeDeleted = getAnimalWithId(id);
+        if (animals.remove(animalToBeDeleted)) {
+            return animalToBeDeleted;
+        }
+        throw new AnimalNotFoundException(ANIMAL_NOT_FOUND_MSG);
+    }
+
+    @Override
+    public Animal update(Animal animal) throws AnimalNotFoundException {
+        Animal animalToBeReplaced = getAnimalWithId(animal.getId());
+        if (animals.remove(getAnimalWithId(animal.getId()))){
+            animals.add(animal);
+        };
+        return animal;
     }
 
     // This method won't be needed when we move to Spring Data

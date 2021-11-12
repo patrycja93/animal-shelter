@@ -27,9 +27,21 @@ public class AnimalServiceImpl implements AnimalService {
 
     @Override
     public Animal delete(Integer id) throws AnimalNotFoundException {
+        validate(id);
+        return animalRepository.delete(id);
+    }
+
+    @Override
+    public Animal update(Animal animal) throws AnimalNotFoundException {
+        validate(animal.getId());
+        return animalRepository.update(animal);
+    }
+
+    private void validate(Integer id) throws AnimalNotFoundException {
         if (id == null || id <= 0) {
             throw new AnimalNotFoundException(INVALID_ID_MSG);
         }
-        return animalRepository.delete(id);
     }
+
+
 }
