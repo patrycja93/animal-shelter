@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-class AnimalCreatedResponse {
+public class AnimalDto {
 
-    private final Animal animal;
+    private final int id;
 }

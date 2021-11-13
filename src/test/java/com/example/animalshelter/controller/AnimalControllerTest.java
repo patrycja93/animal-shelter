@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 class AnimalControllerTest {
 
@@ -29,14 +31,16 @@ class AnimalControllerTest {
             .healthStatus(AnimalHealthStatus.HEALTHY)
             .build();
 
+    public static final AnimalDto DUMMY_ANIMAL_DTO = new AnimalDto(ID);
+
     @Test
     public void shouldAddAnAnimal() {
         AnimalController animalController = new AnimalController(animalService);
-        Mockito.when(animalService.add(DUMMY_ANIMAL)).thenReturn(DUMMY_ANIMAL);
+        Mockito.when(animalService.add(DUMMY_ANIMAL)).thenReturn(DUMMY_ANIMAL_DTO);
 
-        AnimalCreatedResponse result = animalController.addAnimal(DUMMY_ANIMAL);
+        AnimalDto result = animalController.addAnimal(DUMMY_ANIMAL);
 
-        assertThat(result.getAnimal()).isEqualTo(DUMMY_ANIMAL);
+        assertThat(result.getId()).isEqualTo(ID);
     }
 
     @Test
@@ -53,12 +57,9 @@ class AnimalControllerTest {
     @Test
     public void shouldDeleteAnAnimal() throws AnimalNotFoundException {
         AnimalController animalController = new AnimalController(animalService);
-        Mockito.when(animalService.delete(ID)).thenReturn(DUMMY_ANIMAL);
+        animalController.deleteAnimal(ID);
 
-        AnimalDeletedResponse result = animalController.deleteAnimal(ID);
-
-        assertThat(result.getDeletedAnimal()).isEqualTo(DUMMY_ANIMAL);
-        assertThat(result.getDeletedAnimal().getId()).isEqualTo(ID);
+        verify(animalService, times(1)).delete(ID);
     }
 
     @Test

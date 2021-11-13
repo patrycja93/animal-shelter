@@ -1,5 +1,6 @@
 package com.example.animalshelter.service;
 
+import com.example.animalshelter.controller.AnimalDto;
 import com.example.animalshelter.model.Animal;
 import com.example.animalshelter.model.AnimalGender;
 import com.example.animalshelter.model.AnimalHealthStatus;
@@ -26,13 +27,16 @@ class AnimalServiceImplTest {
             .healthStatus(AnimalHealthStatus.HEALTHY)
             .build();
 
+    public static final AnimalDto DUMMY_ANIMAL_DTO = new AnimalDto(ID);
+
+
     @Test
     public void shouldAddAnimal() {
         when(animalRepository.add(DUMMY_ANIMAL)).thenReturn(true);
 
-        Animal result = animalService.add(DUMMY_ANIMAL);
+        AnimalDto result = animalService.add(DUMMY_ANIMAL);
 
-        assertThat(result).isEqualTo(DUMMY_ANIMAL);
+        assertThat(result).isEqualTo(DUMMY_ANIMAL_DTO);
     }
 
     @Test

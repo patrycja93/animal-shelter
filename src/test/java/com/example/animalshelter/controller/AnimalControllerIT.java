@@ -30,6 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AnimalControllerIT {
 
     public static final String INVALID_ANIMAL_ID_NUMBER = "Invalid animal id number.";
+    public static final int ID = 4321;
     public static final Animal DUMMY_ANIMAL = Animal.builder()
             .id(4321)
             .name("Axel")
@@ -38,6 +39,8 @@ public class AnimalControllerIT {
             .gender(AnimalGender.MALE)
             .healthStatus(AnimalHealthStatus.HEALTHY)
             .build();
+
+    public static final AnimalDto DUMMY_ANIMAL_DTO = new AnimalDto(ID);
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -56,7 +59,7 @@ public class AnimalControllerIT {
     @Test
     public void shouldReturnPositiveHttpResponseWhenAddedAnimalSuccessfully() throws Exception {
         String asJson = new ObjectMapper().writeValueAsString(DUMMY_ANIMAL);
-        String responseAsJson = new ObjectMapper().writeValueAsString(new AnimalCreatedResponse(DUMMY_ANIMAL));
+        String responseAsJson = new ObjectMapper().writeValueAsString(new AnimalDto(ID));
 
         this.mockMvc.perform(
                         post("/animals")
@@ -67,8 +70,6 @@ public class AnimalControllerIT {
                 .andExpect(content().string(responseAsJson));
     }
 
-    //Actually this test is broken, repository is true when we call add() method.
-    //TODO: Probably we should use mock here.
     @Test
     public void shouldReturnBadRequestStatusWhenAnimalIsNull() throws Exception {
         String asJson = new ObjectMapper().writeValueAsString(null);
@@ -84,7 +85,7 @@ public class AnimalControllerIT {
     @Test
     public void shouldReturnPositiveHttpResponseWhenDeletedAnimalSuccessfully() throws Exception {
         String asJson = new ObjectMapper().writeValueAsString(DUMMY_ANIMAL);
-        System.out.println(asJson);
+
         this.mockMvc.perform(
                 post("/animals")
                         .content(asJson)
@@ -93,17 +94,8 @@ public class AnimalControllerIT {
         this.mockMvc.perform(
                         delete("/animals/{id}", DUMMY_ANIMAL.getId()))
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content()
-                        .string("{\"deletedAnimal\":{" +
-                                "\"id\":4321," +
-                                "\"name\":\"Axel\"," +
-                                "\"age\":3," +
-                                "\"type\":\"DOG\"," +
-                                "\"gender\":\"MALE\"," +
-                                "\"healthStatus\":\"HEALTHY\"}}"));
+                .andExpect(status().isOk());
     }
-
 
     @Test
     public void shouldThrowExceptionWhenIdIsNegative() throws Exception {

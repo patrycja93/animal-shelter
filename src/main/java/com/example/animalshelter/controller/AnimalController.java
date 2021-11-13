@@ -18,15 +18,13 @@ public class AnimalController {
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseStatus(HttpStatus.CREATED)
-    public AnimalCreatedResponse addAnimal(@RequestBody Animal animal) {
-        Animal createdAnimal = animalService.add(animal);
-        return new AnimalCreatedResponse(createdAnimal);
+    public AnimalDto addAnimal(@RequestBody Animal animal) {
+        return animalService.add(animal);
     }
 
     @DeleteMapping(value = "/{id}", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
-    public AnimalDeletedResponse deleteAnimal(@PathVariable Integer id) throws AnimalNotFoundException {
-        Animal deletedAnimal = animalService.delete(id);
-        return new AnimalDeletedResponse(deletedAnimal);
+    public void deleteAnimal(@PathVariable Integer id) throws AnimalNotFoundException {
+        animalService.delete(id);
     }
 }
