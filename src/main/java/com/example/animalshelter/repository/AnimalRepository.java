@@ -12,5 +12,5 @@ public interface AnimalRepository {
 
     Animal delete(Integer id) throws AnimalNotFoundException;
 
-    Animal update(Animal animal) throws AnimalNotFoundException;
+    void update(Animal animal) throws AnimalNotFoundException;
 }

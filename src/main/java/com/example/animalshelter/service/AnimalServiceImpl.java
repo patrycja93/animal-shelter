@@ -1,5 +1,6 @@
 package com.example.animalshelter.service;
 
+import com.example.animalshelter.controller.AnimalDto;
 import com.example.animalshelter.model.Animal;
 import com.example.animalshelter.repository.AnimalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +19,11 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
-    public Animal add(Animal animal) {
+    public AnimalDto add(Animal animal) {
         if (!animalRepository.add(animal)) {
             throw new AddAnimalException(REPOSITORY_EXCEPTION_MSG);
         }
-        return animal;
+        return new AnimalDto(animal.getId());
     }
 
     @Override
@@ -32,9 +33,9 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
-    public Animal update(Animal animal) throws AnimalNotFoundException {
+    public void update(Animal animal) throws AnimalNotFoundException {
         validate(animal.getId());
-        return animalRepository.update(animal);
+        animalRepository.update(animal);
     }
 
     private void validate(Integer id) throws AnimalNotFoundException {
@@ -42,6 +43,4 @@ public class AnimalServiceImpl implements AnimalService {
             throw new AnimalNotFoundException(INVALID_ID_MSG);
         }
     }
-
-
 }

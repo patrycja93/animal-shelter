@@ -1,11 +1,13 @@
 package com.example.animalshelter.service;
 
+import com.example.animalshelter.controller.AnimalDto;
 import com.example.animalshelter.model.Animal;
 import com.example.animalshelter.model.AnimalGender;
 import com.example.animalshelter.model.AnimalHealthStatus;
 import com.example.animalshelter.model.AnimalType;
 import com.example.animalshelter.repository.AnimalRepository;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -26,13 +28,16 @@ class AnimalServiceImplTest {
             .healthStatus(AnimalHealthStatus.HEALTHY)
             .build();
 
+    public static final AnimalDto DUMMY_ANIMAL_DTO = new AnimalDto(ID);
+
+
     @Test
     public void shouldAddAnimal() {
         when(animalRepository.add(DUMMY_ANIMAL)).thenReturn(true);
 
-        Animal result = animalService.add(DUMMY_ANIMAL);
+        AnimalDto result = animalService.add(DUMMY_ANIMAL);
 
-        assertThat(result).isEqualTo(DUMMY_ANIMAL);
+        assertThat(result).isEqualTo(DUMMY_ANIMAL_DTO);
     }
 
     @Test
@@ -66,5 +71,31 @@ class AnimalServiceImplTest {
         assertThatExceptionOfType(AnimalNotFoundException.class).isThrownBy(
                 () -> animalService.delete(-1)
         ).withMessage(INVALID_ANIMAL_ID_NUMBER);
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenIdIsBelowZeroForUpdateAction() {
+        Animal animalWithNegativeId = Animal.builder().id(-1).build();
+
+        assertThatExceptionOfType(AnimalNotFoundException.class).isThrownBy(
+                () -> animalService.update(animalWithNegativeId)
+        ).withMessage(INVALID_ANIMAL_ID_NUMBER);
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenIdIsNullForUpdateAction() {
+        Animal animalWithNegativeId = Animal.builder().build();
+
+        assertThatExceptionOfType(AnimalNotFoundException.class).isThrownBy(
+                () -> animalService.update(animalWithNegativeId)
+        ).withMessage(INVALID_ANIMAL_ID_NUMBER);
+    }
+
+    @Test
+    public void shouldUpdateAnimal() throws AnimalNotFoundException {
+        animalService.update(DUMMY_ANIMAL);
+
+        verify(animalRepository, times(1))
+                .update(DUMMY_ANIMAL);
     }
 }
