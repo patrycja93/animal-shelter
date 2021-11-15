@@ -27,7 +27,7 @@ public class AnimalRepositoryListImpl implements AnimalRepository {
 
     @Override
     public Optional<Animal> findOne(Long id) {
-        return animals.stream().filter(animal -> animal.getId() == id)
+        return animals.stream().filter(animal -> Long.valueOf(animal.getId()).equals(id))
                 .findFirst();
     }
 }

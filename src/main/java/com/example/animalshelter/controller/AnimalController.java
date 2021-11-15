@@ -30,7 +30,7 @@ public class AnimalController {
     }
 
     @GetMapping("/{id}")
-    public Animal one(@PathVariable Long id) {
+    public Animal one(@PathVariable int id) {
         return animalService.findOne(id);
     }
 }

@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
 public class AnimalNotFoundException extends RuntimeException {
-    public AnimalNotFoundException(Long id) {
+    public AnimalNotFoundException(int id) {
         super("Could not find the animal with id: " + id + ".");
     }
 }
