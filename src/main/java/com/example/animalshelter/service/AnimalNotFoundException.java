@@ -14,7 +14,7 @@ public class AnimalNotFoundException extends Exception {
         super(message);
     }
 
-    public AnimalNotFoundException() {
-        super();
+    public AnimalNotFoundException(Integer id) {
+        super(String.format("Animal with id %d doesn't exist in the database."), id);
     }
 }
