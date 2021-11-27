@@ -1,12 +1,9 @@
 package com.example.animalshelter.controller;
 
-import com.example.animalshelter.model.Animal;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Value;
 
-@Data
-@AllArgsConstructor
+@Value
 public class AnimalDto {
 
-    private final int id;
+    long id;
 }

@@ -1,5 +1,6 @@
 package com.example.animalshelter.service;
 
+import com.example.animalshelter.AnimalTestUtils;
 import com.example.animalshelter.controller.AnimalDto;
 import com.example.animalshelter.model.Animal;
 import com.example.animalshelter.model.AnimalGender;
@@ -11,32 +12,18 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class AnimalServiceImplTest {
+class AnimalServiceImplTest extends AnimalTestUtils {
 
-    public static final String INVALID_ANIMAL_ID_NUMBER = "Invalid animal id number.";
     private final AnimalRepository animalRepository = mock(AnimalRepository.class);
     private final AnimalService animalService = new AnimalServiceImpl(animalRepository);
-    private static final int ID = 4321;
-
-    public static final Animal DUMMY_ANIMAL = Animal.builder()
-            .id(ID)
-            .name("Axel")
-            .age(3)
-            .type(AnimalType.DOG)
-            .gender(AnimalGender.MALE)
-            .healthStatus(AnimalHealthStatus.HEALTHY)
-            .build();
-
-    public static final AnimalDto DUMMY_ANIMAL_DTO = new AnimalDto(ID);
-
 
     @Test
     public void shouldAddAnimal() {
         when(animalRepository.add(DUMMY_ANIMAL)).thenReturn(true);
 
-        AnimalDto result = animalService.add(DUMMY_ANIMAL);
+        Animal result = animalService.add(DUMMY_ANIMAL);
 
-        assertThat(result).isEqualTo(DUMMY_ANIMAL_DTO);
+        assertThat(result).isEqualTo(DUMMY_ANIMAL);
     }
 
     @Test
@@ -56,19 +43,5 @@ class AnimalServiceImplTest {
 
         assertThat(result).isEqualTo(DUMMY_ANIMAL);
         assertThat(result.getId()).isEqualTo(ID);
-    }
-
-    @Test
-    public void shouldThrowExceptionWhenIdIsZero() {
-        assertThatExceptionOfType(AnimalNotFoundException.class).isThrownBy(
-                () -> animalService.delete(0)
-        ).withMessage(INVALID_ANIMAL_ID_NUMBER);
-    }
-
-    @Test
-    public void shouldThrowExceptionWhenIdIsBelowZero() {
-        assertThatExceptionOfType(AnimalNotFoundException.class).isThrownBy(
-                () -> animalService.delete(-1)
-        ).withMessage(INVALID_ANIMAL_ID_NUMBER);
     }
 }

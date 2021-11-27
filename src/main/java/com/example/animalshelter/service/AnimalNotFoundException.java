@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * Like when animal id is not present id database.
  */
 @ResponseStatus(HttpStatus.NOT_FOUND)
-public class AnimalNotFoundException extends Exception {
+public class AnimalNotFoundException extends RuntimeException {
 
     public AnimalNotFoundException(String message) {
         super(message);
     }
 
-    public AnimalNotFoundException() {
-        super();
+    public AnimalNotFoundException(Long id) {
+        super(String.format("Animal with id %d doesn't exist in the database.", id));
     }
 }

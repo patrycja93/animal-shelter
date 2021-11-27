@@ -13,13 +13,12 @@ public interface AnimalService {
      * @param animal object to be saved
      * @return same animal if the add action is successful
      */
-    AnimalDto add(Animal animal);
+    Animal add(Animal animal);
 
     /**
      * Remove Animal object from a database
      * @param id value used to identify the animal
      * @return deleted animal object
-     * @throws AnimalNotFoundException if object cannot be found
      */
-    Animal delete(Integer id) throws AnimalNotFoundException;
+    Animal delete(Long id);
 }

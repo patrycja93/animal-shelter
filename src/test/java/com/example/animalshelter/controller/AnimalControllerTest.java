@@ -1,5 +1,6 @@
 package com.example.animalshelter.controller;
 
+import com.example.animalshelter.AnimalTestUtils;
 import com.example.animalshelter.model.Animal;
 import com.example.animalshelter.model.AnimalGender;
 import com.example.animalshelter.model.AnimalHealthStatus;
@@ -14,29 +15,15 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-class AnimalControllerTest {
-
-    private final static String INVALID_ID_MSG = "Invalid animal id number.";
-    public static final int NEGATIVE_ID_NUMBER = -1;
+class AnimalControllerTest extends AnimalTestUtils {
 
     private final AnimalService animalService = Mockito.mock(AnimalService.class);
-    private static final int ID = 4321;
 
-    public static final Animal DUMMY_ANIMAL = Animal.builder()
-            .id(ID)
-            .name("Axel")
-            .age(3)
-            .type(AnimalType.DOG)
-            .gender(AnimalGender.MALE)
-            .healthStatus(AnimalHealthStatus.HEALTHY)
-            .build();
-
-    public static final AnimalDto DUMMY_ANIMAL_DTO = new AnimalDto(ID);
 
     @Test
     public void shouldAddAnAnimal() {
         AnimalController animalController = new AnimalController(animalService);
-        Mockito.when(animalService.add(DUMMY_ANIMAL)).thenReturn(DUMMY_ANIMAL_DTO);
+        Mockito.when(animalService.add(DUMMY_ANIMAL)).thenReturn(DUMMY_ANIMAL);
 
         AnimalDto result = animalController.addAnimal(DUMMY_ANIMAL);
 

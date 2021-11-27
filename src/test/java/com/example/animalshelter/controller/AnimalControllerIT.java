@@ -1,5 +1,6 @@
 package com.example.animalshelter.controller;
 
+import com.example.animalshelter.AnimalTestUtils;
 import com.example.animalshelter.model.Animal;
 import com.example.animalshelter.model.AnimalGender;
 import com.example.animalshelter.model.AnimalHealthStatus;
@@ -27,20 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class AnimalControllerIT {
-
-    public static final String INVALID_ANIMAL_ID_NUMBER = "Invalid animal id number.";
-    public static final int ID = 4321;
-    public static final Animal DUMMY_ANIMAL = Animal.builder()
-            .id(4321)
-            .name("Axel")
-            .age(3)
-            .type(AnimalType.DOG)
-            .gender(AnimalGender.MALE)
-            .healthStatus(AnimalHealthStatus.HEALTHY)
-            .build();
-
-    public static final AnimalDto DUMMY_ANIMAL_DTO = new AnimalDto(ID);
+public class AnimalControllerIT extends AnimalTestUtils {
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -58,33 +46,31 @@ public class AnimalControllerIT {
 
     @Test
     public void shouldReturnPositiveHttpResponseWhenAddedAnimalSuccessfully() throws Exception {
-        String asJson = new ObjectMapper().writeValueAsString(DUMMY_ANIMAL);
-        String responseAsJson = new ObjectMapper().writeValueAsString(new AnimalDto(ID));
+        String asJson = writeValueAsString(DUMMY_ANIMAL);
+        String responseAsJson = writeValueAsString(new AnimalDto(ID));
 
         this.mockMvc.perform(
                         post("/animals")
                                 .content(asJson)
                                 .contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(content().string(responseAsJson));
     }
 
     @Test
     public void shouldReturnBadRequestStatusWhenAnimalIsNull() throws Exception {
-        String asJson = new ObjectMapper().writeValueAsString(null);
+        String asJson = writeValueAsString(null);
 
         this.mockMvc.perform(
                         post("/animals")
                                 .content(asJson)
                                 .contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
                 .andExpect(status().isBadRequest());
     }
 
     @Test
     public void shouldReturnPositiveHttpResponseWhenDeletedAnimalSuccessfully() throws Exception {
-        String asJson = new ObjectMapper().writeValueAsString(DUMMY_ANIMAL);
+        String asJson = writeValueAsString(DUMMY_ANIMAL);
 
         this.mockMvc.perform(
                 post("/animals")
@@ -93,7 +79,6 @@ public class AnimalControllerIT {
 
         this.mockMvc.perform(
                         delete("/animals/{id}", DUMMY_ANIMAL.getId()))
-                .andDo(print())
                 .andExpect(status().isOk());
     }
 
@@ -102,13 +87,7 @@ public class AnimalControllerIT {
         this.mockMvc.perform(
                         delete("/animals/{id}", -1)
                                 .contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
-                .andExpect(status().isNotFound())
-                .andExpect(result -> assertTrue(
-                        result.getResolvedException() instanceof AnimalNotFoundException))
-                .andExpect(result -> assertEquals(
-                        INVALID_ANIMAL_ID_NUMBER,
-                        Objects.requireNonNull(result.getResolvedException()).getMessage()));
+                .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -116,12 +95,11 @@ public class AnimalControllerIT {
         this.mockMvc.perform(
                         delete("/animals/{id}", 1)
                                 .contentType(MediaType.APPLICATION_JSON))
-                .andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(result -> assertTrue(
                         result.getResolvedException() instanceof AnimalNotFoundException))
                 .andExpect(result -> assertEquals(
-                        "Animal with provided id doesn't exist in the database.",
+                        "Animal with id 1 doesn't exist in the database.",
                         Objects.requireNonNull(result.getResolvedException()).getMessage()));
     }
 }

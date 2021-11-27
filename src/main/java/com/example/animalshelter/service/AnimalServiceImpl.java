@@ -19,18 +19,15 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
-    public AnimalDto add(Animal animal) {
+    public Animal add(Animal animal) {
         if (!animalRepository.add(animal)) {
             throw new AddAnimalException(REPOSITORY_EXCEPTION_MSG);
         }
-        return new AnimalDto(animal.getId());
+        return animal;
     }
 
     @Override
-    public Animal delete(Integer id) throws AnimalNotFoundException {
-        if (id == null || id <= 0) {
-            throw new AnimalNotFoundException(INVALID_ID_MSG);
-        }
+    public Animal delete(Long id) {
         return animalRepository.delete(id);
     }
 }
