@@ -5,6 +5,8 @@ import com.example.animalshelter.repository.AnimalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AnimalServiceImpl implements AnimalService {
 
@@ -22,5 +24,16 @@ public class AnimalServiceImpl implements AnimalService {
             throw new AddAnimalException(REPOSITORY_EXCEPTION_MSG);
         }
         return true;
+    }
+
+    @Override
+    public List<Animal> findAll() {
+        return animalRepository.findAll();
+    }
+
+    @Override
+    public Animal findOne(Long id) {
+        return animalRepository.findOne(id)
+                .orElseThrow(() -> new AnimalNotFoundException(id));
     }
 }
