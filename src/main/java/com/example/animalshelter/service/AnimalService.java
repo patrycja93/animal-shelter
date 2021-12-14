@@ -10,5 +10,5 @@ public interface AnimalService {
 
     List<Animal> findAll();
 
-    Animal findOne(int id);
+    Animal findOne(Long id);
 }

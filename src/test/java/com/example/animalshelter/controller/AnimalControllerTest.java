@@ -72,18 +72,18 @@ class AnimalControllerTest {
 
     @Test
     public void shouldGetOneAnimal() {
-        Mockito.when(animalService.findOne(4321)).thenReturn(dummyAnimal);
+        Mockito.when(animalService.findOne(4321L)).thenReturn(dummyAnimal);
 
-        Animal animal = animalController.one(4321);
+        Animal animal = animalController.one(4321L);
 
         assertThat(animal).isEqualTo(dummyAnimal);
     }
 
     @Test
     public void shouldThrowAnimalNotFoundExceptionWhenAnimalIsNotFound() {
-        Mockito.when(animalService.findOne(1)).thenThrow(new AnimalNotFoundException(1));
+        Mockito.when(animalService.findOne(1L)).thenThrow(new AnimalNotFoundException(1L));
 
-        assertThatThrownBy(() -> animalController.one(1))
+        assertThatThrownBy(() -> animalController.one(1L))
         .isInstanceOf(AnimalNotFoundException.class)
         .hasMessage("Could not find the animal with id: 1.");
     }

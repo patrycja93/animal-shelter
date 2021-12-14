@@ -32,8 +32,8 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
-    public Animal findOne(int id) {
-        return animalRepository.findOne((long) id)
+    public Animal findOne(Long id) {
+        return animalRepository.findOne(id)
                 .orElseThrow(() -> new AnimalNotFoundException(id));
     }
 }
