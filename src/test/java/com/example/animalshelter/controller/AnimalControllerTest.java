@@ -1,50 +1,62 @@
 package com.example.animalshelter.controller;
 
+import com.example.animalshelter.AnimalTestUtils;
 import com.example.animalshelter.model.Animal;
 import com.example.animalshelter.model.AnimalGender;
 import com.example.animalshelter.model.AnimalHealthStatus;
 import com.example.animalshelter.model.AnimalType;
+import com.example.animalshelter.service.AddAnimalException;
 import com.example.animalshelter.service.AnimalService;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
+import com.example.animalshelter.service.AnimalNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
-class AnimalControllerTest {
+class AnimalControllerTest extends AnimalTestUtils {
 
     private final AnimalService animalService = Mockito.mock(AnimalService.class);
-    private static Animal dummyAnimal;
 
-    @BeforeAll
-    static void setUp() {
-        dummyAnimal = new Animal();
-        dummyAnimal.setId(4321);
-        dummyAnimal.setAge(3);
-        dummyAnimal.setGender(AnimalGender.MALE);
-        dummyAnimal.setHealthStatus(AnimalHealthStatus.HEALTHY);
-        dummyAnimal.setName("Alex");
-        dummyAnimal.setType(AnimalType.DOG);
-    }
 
     @Test
     public void shouldAddAnAnimal() {
         AnimalController animalController = new AnimalController(animalService);
-        Mockito.when(animalService.add(dummyAnimal)).thenReturn(true);
+        Mockito.when(animalService.add(DUMMY_ANIMAL)).thenReturn(DUMMY_ANIMAL);
 
-        String result = animalController.addAnimal(dummyAnimal);
+        AnimalDto result = animalController.addAnimal(DUMMY_ANIMAL);
 
-        assertThat(result).isEqualTo("The animal has been added successfully.");
+        assertThat(result.getId()).isEqualTo(ID);
     }
 
     @Test
     public void shouldNotAddAnAnimal() {
         AnimalController animalController = new AnimalController(animalService);
-        Mockito.when(animalService.add(dummyAnimal)).thenReturn(false);
+        Mockito.when(animalService.add(DUMMY_ANIMAL))
+                .thenThrow(new AddAnimalException("Error during saving an animal in database"));
 
-        String result = animalController.addAnimal(dummyAnimal);
+        assertThatExceptionOfType(AddAnimalException.class)
+                .isThrownBy(() -> animalController.addAnimal(DUMMY_ANIMAL))
+                .withMessage("Could not create the animal Error during saving an animal in database.");
+    }
 
-        assertThat(result).isEqualTo("An error occurred during adding animal.");
+    @Test
+    public void shouldDeleteAnAnimal() throws AnimalNotFoundException {
+        AnimalController animalController = new AnimalController(animalService);
+        animalController.deleteAnimal(ID);
+
+        verify(animalService, times(1)).delete(ID);
+    }
+
+    @Test
+    public void shouldNotDeleteAnAnimal() throws AnimalNotFoundException {
+        AnimalController animalController = new AnimalController(animalService);
+        Mockito.when(animalService.delete(NEGATIVE_ID_NUMBER))
+                .thenThrow(new AnimalNotFoundException(INVALID_ID_MSG));
+
+        assertThatExceptionOfType(AnimalNotFoundException.class)
+                .isThrownBy(() -> animalController.deleteAnimal(NEGATIVE_ID_NUMBER))
+                .withMessage("Invalid animal id number.");
     }
 }

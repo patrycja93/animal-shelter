@@ -1,39 +1,47 @@
 package com.example.animalshelter.service;
 
+import com.example.animalshelter.AnimalTestUtils;
+import com.example.animalshelter.controller.AnimalDto;
 import com.example.animalshelter.model.Animal;
+import com.example.animalshelter.model.AnimalGender;
+import com.example.animalshelter.model.AnimalHealthStatus;
+import com.example.animalshelter.model.AnimalType;
 import com.example.animalshelter.repository.AnimalRepository;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-class AnimalServiceImplTest {
+class AnimalServiceImplTest extends AnimalTestUtils {
 
-    private final AnimalRepository animalRepository = Mockito.mock(AnimalRepository.class);
-    private Animal dummyAnimal;
+    private final AnimalRepository animalRepository = mock(AnimalRepository.class);
+    private final AnimalService animalService = new AnimalServiceImpl(animalRepository);
 
     @Test
     public void shouldAddAnimal() {
-        dummyAnimal = new Animal();
-        dummyAnimal.setId(123456);
-        AnimalService animalService = new AnimalServiceImpl(animalRepository);
-        Mockito.when(animalRepository.add(dummyAnimal)).thenReturn(true);
+        when(animalRepository.add(DUMMY_ANIMAL)).thenReturn(true);
 
-        boolean result = animalService.add(dummyAnimal);
+        Animal result = animalService.add(DUMMY_ANIMAL);
 
-        assertThat(result).isTrue();
+        assertThat(result).isEqualTo(DUMMY_ANIMAL);
     }
 
     @Test
     public void shouldThrowExceptionWhenDatabaseError() {
-        dummyAnimal = new Animal();
-        dummyAnimal.setId(123456);
-
-        AnimalService animalService = new AnimalServiceImpl(animalRepository);
-        Mockito.when(animalRepository.add(dummyAnimal)).thenReturn(false);
+        when(animalRepository.add(DUMMY_ANIMAL)).thenReturn(false);
 
         assertThatExceptionOfType(AddAnimalException.class).isThrownBy(
-                () -> animalService.add(dummyAnimal)
+                () -> animalService.add(DUMMY_ANIMAL)
         ).withMessage("Could not create the animal Error during saving an animal in database.");
+    }
+
+    @Test
+    public void shouldDeleteAnimal() throws AnimalNotFoundException {
+        when(animalRepository.delete(ID)).thenReturn(DUMMY_ANIMAL);
+
+        Animal result = animalService.delete(ID);
+
+        assertThat(result).isEqualTo(DUMMY_ANIMAL);
+        assertThat(result.getId()).isEqualTo(ID);
     }
 }
