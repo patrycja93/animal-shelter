@@ -3,6 +3,9 @@ package com.example.animalshelter.model;
 import lombok.Builder;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+
 /**
  * Keeps basic information about an animal
  */
@@ -10,7 +13,10 @@ import lombok.Data;
 @Builder
 public class Animal {
 
-    private int id;
+    @NotNull
+    @Positive
+    private Long id;
+    
     private String name;
     private int age;
     private AnimalType type;

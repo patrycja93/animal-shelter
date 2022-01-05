@@ -9,19 +9,18 @@ import com.example.animalshelter.model.Animal;
 public interface AnimalService {
 
     /**
-     * Persist the Animal object into a database
+     * Persist the Animal object into a database.
      * @param animal object to be saved
      * @return same animal if the add action is successful
      */
-    AnimalDto add(Animal animal);
+    Animal add(Animal animal);
 
     /**
      * Remove Animal object from a database
      * @param id value used to identify the animal
      * @return deleted animal object
-     * @throws AnimalNotFoundException if animal cannot be found
      */
-    Animal delete(Integer id) throws AnimalNotFoundException;
+    Animal delete(Long id);
 
     /**
      * Replace the animal entity with another one
