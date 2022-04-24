@@ -2,18 +2,15 @@ package com.example.animalshelter.controller;
 
 import com.example.animalshelter.AnimalTestUtils;
 import com.example.animalshelter.model.Animal;
-import com.example.animalshelter.model.AnimalGender;
-import com.example.animalshelter.model.AnimalHealthStatus;
-import com.example.animalshelter.model.AnimalType;
 import com.example.animalshelter.service.AddAnimalException;
 import com.example.animalshelter.service.AnimalService;
 import com.example.animalshelter.service.AnimalNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.web.server.ResponseStatusException;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 class AnimalControllerTest extends AnimalTestUtils {
 
@@ -57,6 +54,28 @@ class AnimalControllerTest extends AnimalTestUtils {
 
         assertThatExceptionOfType(AnimalNotFoundException.class)
                 .isThrownBy(() -> animalController.deleteAnimal(NEGATIVE_ID_NUMBER))
-                .withMessage("Invalid animal id number.");
+                .withMessage(INVALID_ID_MSG);
+    }
+
+    @Test
+    public void shouldUpdateAnimal() throws AnimalNotFoundException {
+        AnimalController animalController = new AnimalController(animalService);
+        animalController.updateAnimal(DUMMY_ANIMAL);
+
+        verify(animalService, times(1))
+                .update(DUMMY_ANIMAL);
+    }
+
+    @Test
+    public void shouldNotUpdateAnimal() throws AnimalNotFoundException {
+        Animal animalWithNegativeId = Animal.builder().id(NEGATIVE_ID_NUMBER).build();
+        AnimalController animalController = new AnimalController(animalService);
+
+        doThrow(new AnimalNotFoundException(INVALID_ID_MSG))
+                .when(animalService).update(animalWithNegativeId);
+
+        assertThatExceptionOfType(ResponseStatusException.class)
+                .isThrownBy(() -> animalController.updateAnimal(animalWithNegativeId))
+                .withMessage(INVALID_ID_MSG_CONTROLLER_EXCEPTION);
     }
 }

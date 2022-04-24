@@ -21,4 +21,11 @@ public interface AnimalService {
      * @return deleted animal object
      */
     Animal delete(Long id);
+
+    /**
+     * Replace the animal entity with another one
+     * @param animal the new value for animal entity
+     * @throws AnimalNotFoundException if animal cannot be found
+     */
+    void update(Animal animal) throws AnimalNotFoundException;
 }

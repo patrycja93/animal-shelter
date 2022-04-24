@@ -1,12 +1,7 @@
 package com.example.animalshelter.controller;
 
 import com.example.animalshelter.AnimalTestUtils;
-import com.example.animalshelter.model.Animal;
-import com.example.animalshelter.model.AnimalGender;
-import com.example.animalshelter.model.AnimalHealthStatus;
-import com.example.animalshelter.model.AnimalType;
 import com.example.animalshelter.service.AnimalNotFoundException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -20,9 +15,7 @@ import java.util.Objects;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 

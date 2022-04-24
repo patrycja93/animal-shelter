@@ -1,11 +1,7 @@
 package com.example.animalshelter.service;
 
 import com.example.animalshelter.AnimalTestUtils;
-import com.example.animalshelter.controller.AnimalDto;
 import com.example.animalshelter.model.Animal;
-import com.example.animalshelter.model.AnimalGender;
-import com.example.animalshelter.model.AnimalHealthStatus;
-import com.example.animalshelter.model.AnimalType;
 import com.example.animalshelter.repository.AnimalRepository;
 import org.junit.jupiter.api.Test;
 
@@ -43,5 +39,31 @@ class AnimalServiceImplTest extends AnimalTestUtils {
 
         assertThat(result).isEqualTo(DUMMY_ANIMAL);
         assertThat(result.getId()).isEqualTo(ID);
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenIdIsBelowZeroForUpdateAction() {
+        Animal animalWithNegativeId = Animal.builder().id(-1L).build();
+
+        assertThatExceptionOfType(AnimalNotFoundException.class).isThrownBy(
+                () -> animalService.update(animalWithNegativeId)
+        ).withMessage(INVALID_ID_MSG);
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenIdIsNullForUpdateAction() {
+        Animal animalWithNegativeId = Animal.builder().build();
+
+        assertThatExceptionOfType(AnimalNotFoundException.class).isThrownBy(
+                () -> animalService.update(animalWithNegativeId)
+        ).withMessage(INVALID_ID_MSG);
+    }
+
+    @Test
+    public void shouldUpdateAnimal() throws AnimalNotFoundException {
+        animalService.update(DUMMY_ANIMAL);
+
+        verify(animalRepository, times(1))
+                .update(DUMMY_ANIMAL);
     }
 }
