@@ -7,6 +7,7 @@ import com.example.animalshelter.service.AnimalService;
 import com.example.animalshelter.service.AnimalNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.web.server.ResponseStatusException;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -73,8 +74,8 @@ class AnimalControllerTest extends AnimalTestUtils {
         doThrow(new AnimalNotFoundException(INVALID_ID_MSG))
                 .when(animalService).update(animalWithNegativeId);
 
-        assertThatExceptionOfType(AnimalNotFoundException.class)
+        assertThatExceptionOfType(ResponseStatusException.class)
                 .isThrownBy(() -> animalController.updateAnimal(animalWithNegativeId))
-                .withMessage(INVALID_ID_MSG);
+                .withMessage(INVALID_ID_MSG_CONTROLLER_EXCEPTION);
     }
 }

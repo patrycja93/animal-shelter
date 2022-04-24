@@ -23,6 +23,8 @@ public class AnimalTestUtils {
             .build();
 
     public final static String INVALID_ID_MSG = "Invalid animal id number.";
+    public final static String INVALID_ID_MSG_CONTROLLER_EXCEPTION =
+            String.format("404 NOT_FOUND \"Animal with id %d not found.\"",NEGATIVE_ID_NUMBER);
 
     private final static ObjectMapper objectMapper = new ObjectMapper();
 
