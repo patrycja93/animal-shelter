@@ -1,7 +1,6 @@
 package com.example.animalshelter.repository;
 
 import com.example.animalshelter.model.Animal;
-import com.example.animalshelter.service.AnimalNotFoundException;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

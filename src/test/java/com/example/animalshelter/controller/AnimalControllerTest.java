@@ -1,17 +1,14 @@
 package com.example.animalshelter.controller;
 
 import com.example.animalshelter.AnimalTestUtils;
-import com.example.animalshelter.model.Animal;
-import com.example.animalshelter.model.AnimalGender;
-import com.example.animalshelter.model.AnimalHealthStatus;
-import com.example.animalshelter.model.AnimalType;
 import com.example.animalshelter.service.AddAnimalException;
-import com.example.animalshelter.service.AnimalService;
 import com.example.animalshelter.service.AnimalNotFoundException;
+import com.example.animalshelter.service.AnimalService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 

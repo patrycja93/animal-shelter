@@ -1,6 +1,5 @@
 package com.example.animalshelter.service;
 
-import com.example.animalshelter.controller.AnimalDto;
 import com.example.animalshelter.model.Animal;
 
 /**

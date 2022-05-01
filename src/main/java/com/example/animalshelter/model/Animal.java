@@ -3,8 +3,6 @@ package com.example.animalshelter.model;
 import lombok.Data;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 
 /**
  * Keeps basic information about an animal
@@ -15,8 +13,6 @@ import javax.validation.constraints.Positive;
 public class Animal {
 
     @Id
-    @NotNull
-    @Positive
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
     private Long id;

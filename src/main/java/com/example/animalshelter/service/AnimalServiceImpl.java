@@ -1,6 +1,5 @@
 package com.example.animalshelter.service;
 
-import com.example.animalshelter.controller.AnimalDto;
 import com.example.animalshelter.model.Animal;
 import com.example.animalshelter.repository.AnimalRepository;
 import org.springframework.beans.factory.annotation.Autowired;

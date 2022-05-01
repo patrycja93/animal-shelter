@@ -1,18 +1,16 @@
 package com.example.animalshelter.service;
 
 import com.example.animalshelter.AnimalTestUtils;
-import com.example.animalshelter.controller.AnimalDto;
 import com.example.animalshelter.model.Animal;
-import com.example.animalshelter.model.AnimalGender;
-import com.example.animalshelter.model.AnimalHealthStatus;
-import com.example.animalshelter.model.AnimalType;
 import com.example.animalshelter.repository.AnimalRepository;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class AnimalServiceImplTest extends AnimalTestUtils {
 
@@ -35,5 +33,14 @@ class AnimalServiceImplTest extends AnimalTestUtils {
 
         assertThat(result).isEqualTo(DUMMY_ANIMAL);
         assertThat(result.getId()).isEqualTo(ID);
+    }
+
+    @Test
+    public void shouldDeleteAnimalThrowExceptionWhenIdIsNotPresent() {
+        when(animalRepository.findById(ID)).thenReturn(Optional.empty());
+
+        assertThatExceptionOfType(AnimalNotFoundException.class)
+                .isThrownBy(() -> animalService.delete(ID))
+                .withMessage("Animal with id 1 doesn't exist in the database.");
     }
 }
