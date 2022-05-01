@@ -9,6 +9,8 @@ import com.example.animalshelter.model.AnimalType;
 import com.example.animalshelter.repository.AnimalRepository;
 import org.junit.jupiter.api.Test;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -19,7 +21,7 @@ class AnimalServiceImplTest extends AnimalTestUtils {
 
     @Test
     public void shouldAddAnimal() {
-        when(animalRepository.add(DUMMY_ANIMAL)).thenReturn(true);
+        when(animalRepository.save(DUMMY_ANIMAL)).thenReturn(DUMMY_ANIMAL);
 
         Animal result = animalService.add(DUMMY_ANIMAL);
 
@@ -27,18 +29,8 @@ class AnimalServiceImplTest extends AnimalTestUtils {
     }
 
     @Test
-    public void shouldThrowExceptionWhenDatabaseError() {
-        when(animalRepository.add(DUMMY_ANIMAL)).thenReturn(false);
-
-        assertThatExceptionOfType(AddAnimalException.class).isThrownBy(
-                () -> animalService.add(DUMMY_ANIMAL)
-        ).withMessage("Could not create the animal Error during saving an animal in database.");
-    }
-
-    @Test
-    public void shouldDeleteAnimal() throws AnimalNotFoundException {
-        when(animalRepository.delete(ID)).thenReturn(DUMMY_ANIMAL);
-
+    public void shouldDeleteAnimal() {
+        when(animalRepository.findById(ID)).thenReturn(Optional.ofNullable(DUMMY_ANIMAL));
         Animal result = animalService.delete(ID);
 
         assertThat(result).isEqualTo(DUMMY_ANIMAL);

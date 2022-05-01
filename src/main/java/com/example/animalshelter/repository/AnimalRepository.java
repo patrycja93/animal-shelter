@@ -2,13 +2,12 @@ package com.example.animalshelter.repository;
 
 import com.example.animalshelter.model.Animal;
 import com.example.animalshelter.service.AnimalNotFoundException;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 /**
  * Database operation for Animal entity.
  */
-public interface AnimalRepository {
-
-    boolean add(Animal animal);
-
-    Animal delete(Long id);
+@Repository
+public interface AnimalRepository extends JpaRepository<Animal, Long> {
 }

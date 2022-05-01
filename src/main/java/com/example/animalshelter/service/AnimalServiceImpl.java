@@ -6,11 +6,11 @@ import com.example.animalshelter.repository.AnimalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class AnimalServiceImpl implements AnimalService {
 
-    private final static String REPOSITORY_EXCEPTION_MSG = "Error during saving an animal in database";
-    private final static String INVALID_ID_MSG = "Invalid animal id number.";
     private final AnimalRepository animalRepository;
 
     @Autowired
@@ -20,14 +20,18 @@ public class AnimalServiceImpl implements AnimalService {
 
     @Override
     public Animal add(Animal animal) {
-        if (!animalRepository.add(animal)) {
-            throw new AddAnimalException(REPOSITORY_EXCEPTION_MSG);
-        }
-        return animal;
+       return animalRepository.save(animal);
     }
 
     @Override
     public Animal delete(Long id) {
-        return animalRepository.delete(id);
+        Optional<Animal> animalToDelete = animalRepository.findById(id);
+
+        if(animalToDelete.isEmpty()){
+           throw new AnimalNotFoundException(id);
+        }
+
+        animalRepository.delete(animalToDelete.get());
+        return animalToDelete.get();
     }
 }

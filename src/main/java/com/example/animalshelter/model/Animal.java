@@ -1,8 +1,8 @@
 package com.example.animalshelter.model;
 
-import lombok.Builder;
 import lombok.Data;
 
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
@@ -10,16 +10,52 @@ import javax.validation.constraints.Positive;
  * Keeps basic information about an animal
  */
 @Data
-@Builder
+@Table
+@Entity
 public class Animal {
 
+    @Id
     @NotNull
     @Positive
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column
     private Long id;
-    
+
+    @Column
     private String name;
+
+    @Column
     private int age;
+
+    @Column
+    @Enumerated(EnumType.STRING)
     private AnimalType type;
+
+    @Column
+    @Enumerated(EnumType.STRING)
     private AnimalGender gender;
+
+    @Column
+    @Enumerated(EnumType.STRING)
     private AnimalHealthStatus healthStatus;
+
+    public Animal() {
+    }
+
+    public Animal(String name, int age, AnimalType type, AnimalGender gender, AnimalHealthStatus healthStatus) {
+        this.name = name;
+        this.age = age;
+        this.type = type;
+        this.gender = gender;
+        this.healthStatus = healthStatus;
+    }
+
+    public Animal(Long id, String name, int age, AnimalType type, AnimalGender gender, AnimalHealthStatus healthStatus) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.type = type;
+        this.gender = gender;
+        this.healthStatus = healthStatus;
+    }
 }
