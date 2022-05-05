@@ -23,10 +23,10 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
-    public Animal delete(Long id) {
+    public Long delete(Long id) {
        Animal animalToDelete = animalRepository.findById(id)
            .orElseThrow(() -> new AnimalNotFoundException(id));
         animalRepository.delete(animalToDelete);
-        return animalToDelete;
+        return id;
     }
 }

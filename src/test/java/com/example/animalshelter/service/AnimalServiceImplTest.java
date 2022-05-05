@@ -29,10 +29,9 @@ class AnimalServiceImplTest extends AnimalTestUtils {
     @Test
     public void shouldDeleteAnimal() {
         when(animalRepository.findById(ID)).thenReturn(Optional.ofNullable(DUMMY_ANIMAL));
-        Animal result = animalService.delete(ID);
+        Long result = animalService.delete(ID);
 
-        assertThat(result).isEqualTo(DUMMY_ANIMAL);
-        assertThat(result.getId()).isEqualTo(ID);
+        assertThat(result).isEqualTo(ID);
     }
 
     @Test
