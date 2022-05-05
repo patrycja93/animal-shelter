@@ -24,13 +24,9 @@ public class AnimalServiceImpl implements AnimalService {
 
     @Override
     public Animal delete(Long id) {
-        Optional<Animal> animalToDelete = animalRepository.findById(id);
-
-        if(animalToDelete.isEmpty()){
-           throw new AnimalNotFoundException(id);
-        }
-
-        animalRepository.delete(animalToDelete.get());
-        return animalToDelete.get();
+       Animal animalToDelete = animalRepository.findById(id)
+           .orElseThrow(() -> new AnimalNotFoundException(id));
+        animalRepository.delete(animalToDelete);
+        return animalToDelete;
     }
 }
