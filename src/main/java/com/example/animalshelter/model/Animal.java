@@ -1,7 +1,7 @@
 package com.example.animalshelter.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -9,10 +9,10 @@ import javax.persistence.*;
 /**
  * Keeps basic information about an animal
  */
-@Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 public class Animal {
 
     @Id
