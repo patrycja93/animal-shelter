@@ -5,15 +5,7 @@ import org.springframework.http.HttpStatus;
 
 @Data
 public class AnimalApiError {
-    private HttpStatus status;
-    private String message;
+    private final HttpStatus status;
+    private final String message;
 
-    AnimalApiError(HttpStatus status) {
-        this.status = status;
-    }
-
-    AnimalApiError(HttpStatus status, String message) {
-        this.status = status;
-        this.message = message;
-    }
 }

@@ -10,8 +10,7 @@ public class AnimalRestExceptionHandler {
 
     @ExceptionHandler(AnimalNotFoundException.class)
     private ResponseEntity<Object> handleAnimalNotFound(AnimalNotFoundException exception) {
-        AnimalApiError animalApiError = new AnimalApiError(HttpStatus.NOT_FOUND);
-        animalApiError.setMessage(exception.getMessage());
+        AnimalApiError animalApiError = new AnimalApiError(HttpStatus.NOT_FOUND, exception.getMessage());
         return buildResponseEntity(animalApiError);
     }
 
