@@ -1,6 +1,5 @@
 package com.example.animalshelter.service;
 
-import com.example.animalshelter.controller.AnimalDto;
 import com.example.animalshelter.model.Animal;
 
 /**
@@ -18,7 +17,7 @@ public interface AnimalService {
     /**
      * Remove Animal object from a database
      * @param id value used to identify the animal
-     * @return deleted animal object
+     * @return deleted animal id
      */
-    Animal delete(Long id);
+    Long delete(Long id);
 }

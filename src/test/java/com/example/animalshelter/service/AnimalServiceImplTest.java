@@ -1,16 +1,16 @@
 package com.example.animalshelter.service;
 
 import com.example.animalshelter.AnimalTestUtils;
-import com.example.animalshelter.controller.AnimalDto;
 import com.example.animalshelter.model.Animal;
-import com.example.animalshelter.model.AnimalGender;
-import com.example.animalshelter.model.AnimalHealthStatus;
-import com.example.animalshelter.model.AnimalType;
 import com.example.animalshelter.repository.AnimalRepository;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class AnimalServiceImplTest extends AnimalTestUtils {
 
@@ -19,7 +19,7 @@ class AnimalServiceImplTest extends AnimalTestUtils {
 
     @Test
     public void shouldAddAnimal() {
-        when(animalRepository.add(DUMMY_ANIMAL)).thenReturn(true);
+        when(animalRepository.save(DUMMY_ANIMAL)).thenReturn(DUMMY_ANIMAL);
 
         Animal result = animalService.add(DUMMY_ANIMAL);
 
@@ -27,21 +27,19 @@ class AnimalServiceImplTest extends AnimalTestUtils {
     }
 
     @Test
-    public void shouldThrowExceptionWhenDatabaseError() {
-        when(animalRepository.add(DUMMY_ANIMAL)).thenReturn(false);
+    public void shouldDeleteAnimal() {
+        when(animalRepository.findById(ID)).thenReturn(Optional.ofNullable(DUMMY_ANIMAL));
+        Long result = animalService.delete(ID);
 
-        assertThatExceptionOfType(AddAnimalException.class).isThrownBy(
-                () -> animalService.add(DUMMY_ANIMAL)
-        ).withMessage("Could not create the animal Error during saving an animal in database.");
+        assertThat(result).isEqualTo(ID);
     }
 
     @Test
-    public void shouldDeleteAnimal() throws AnimalNotFoundException {
-        when(animalRepository.delete(ID)).thenReturn(DUMMY_ANIMAL);
+    public void shouldDeleteAnimalThrowExceptionWhenIdIsNotPresent() {
+        when(animalRepository.findById(ID)).thenReturn(Optional.empty());
 
-        Animal result = animalService.delete(ID);
-
-        assertThat(result).isEqualTo(DUMMY_ANIMAL);
-        assertThat(result.getId()).isEqualTo(ID);
+        assertThatExceptionOfType(AnimalNotFoundException.class)
+                .isThrownBy(() -> animalService.delete(ID))
+                .withMessage("Animal with id 1 doesn't exist in the database.");
     }
 }
