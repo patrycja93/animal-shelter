@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Objects;
@@ -22,6 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@Transactional
 public class AnimalControllerIT extends AnimalTestUtils {
 
     @Autowired
@@ -72,7 +74,7 @@ public class AnimalControllerIT extends AnimalTestUtils {
                         .contentType(MediaType.APPLICATION_JSON));
 
         this.mockMvc.perform(
-                        delete("/animals/{id}", DUMMY_ANIMAL.getId()))
+                        delete("/animals/{id}", 2))
                 .andExpect(status().isOk());
     }
 
@@ -87,13 +89,13 @@ public class AnimalControllerIT extends AnimalTestUtils {
     @Test
     public void shouldThrowExceptionWhenIdNotFound() throws Exception {
         this.mockMvc.perform(
-                        delete("/animals/{id}", 1)
+                        delete("/animals/{id}", 100)
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andExpect(result -> assertTrue(
                         result.getResolvedException() instanceof AnimalNotFoundException))
                 .andExpect(result -> assertEquals(
-                        "Animal with id 1 doesn't exist in the database.",
+                        "Animal with id 100 doesn't exist in the database.",
                         Objects.requireNonNull(result.getResolvedException()).getMessage()));
     }
 }

@@ -12,7 +12,7 @@ public class AnimalTestUtils {
     public static final Long NEGATIVE_ID_NUMBER = -1L;
     public static final Long ID = 1L;
 
-    public static final Animal DUMMY_ANIMAL = new Animal(ID,"Axel",3,AnimalType.DOG,AnimalGender.MALE,AnimalHealthStatus.HEALTHY);
+    public static final Animal DUMMY_ANIMAL = new Animal("Axel",3,AnimalType.DOG,AnimalGender.MALE,AnimalHealthStatus.HEALTHY);
 
     public final static String INVALID_ID_MSG = "Invalid animal id number.";
 
